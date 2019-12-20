@@ -1,5 +1,3 @@
-const path = require("path");
-
 module.exports = ({ config }) => {
   // looks like storybook having trouble with emotion as for now => manually configuration webpack
 
@@ -21,14 +19,6 @@ module.exports = ({ config }) => {
     test: /\.(ts|tsx)$/,
     use: [require.resolve("babel-loader"), require.resolve("react-docgen-typescript-loader")]
   });
-
-  // loader for scss files
-  config.module.rules.push({
-    test: /\.scss$/,
-    use: ['style-loader', 'css-loader', 'sass-loader'],
-    include: path.resolve(__dirname, '../'),
-  });
-
   config.resolve.extensions.push(".ts", ".tsx");
   return config;
 };

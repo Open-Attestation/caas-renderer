@@ -2,8 +2,12 @@ import React, { FunctionComponent, useState } from "react";
 import { TemplateProps } from "@govtechsg/decentralized-renderer-react-components";
 import { format } from "date-fns";
 // import { css } from "@emotion/core";
-import "./../../assets/scss/main.scss";
 import { CustomTemplateCertificate, Rating } from "../sample";
+
+const colorWhite = "#ffffff";
+const colorBlue = "#3463b1";
+const colorBlueDark = "#2a4e8A";
+const easeOutCubic = "cubic-bezier(0.215, 0.61, 0.355, 1)";
 
 const fieldGroupStyle = {
   border: 0,
@@ -23,6 +27,46 @@ const backFieldGroupStyle = {
   borderStyle: "solid",
   paddingLeft: 5,
   marginBottom: 5
+};
+
+const scene = {
+  position: "absolute",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50% ,-50%)",
+  perspective: 1000
+};
+
+const flipCard = {
+  position: "relative",
+  transition: "transform 0.7s " + easeOutCubic,
+  transformStyle: "preserve-3d",
+  width: 250,
+  height: 400,
+  marginLeft: "auto",
+  marginRight: "auto",
+  color: colorWhite
+};
+
+const flipCardFlipped = {
+  transform: "rotateY(180deg)"
+};
+
+const flipCardFace = {
+  backfaceVisibility: "hidden",
+  position: "absolute",
+  height: "100%",
+  width: "100%",
+  backgroundColor: colorBlue,
+  borderRadius: 15
+};
+
+const flipCardFaceFront = {
+  transform: "rotateY(0deg)"
+};
+
+const flipCardFaceBack = {
+  transform: "rotateY(180deg)"
 };
 
 interface RatingsProps {
@@ -51,7 +95,7 @@ const Ratings: FunctionComponent<RatingsProps> = ({ ratings }: { ratings: Rating
 export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCertificate>> = ({ document }) => {
   const [isFlipped, setFlip] = useState(false);
 
-  const flipCard = () => {
+  const onClickFlipCard = () => {
     if (isFlipped) {
       setFlip(false);
     } else {
@@ -60,9 +104,9 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
   };
 
   return (
-    <div className="scene">
-      <div className={"flipcard " + (isFlipped ? "is-flipped" : "")} onClick={flipCard}>
-        <div className="flipcard-face flipcard-face-front">
+    <div style={scene}>
+      <div style={Object.assign({}, flipCard, isFlipped ? flipCardFlipped : {})} onClick={onClickFlipCard}>
+        <div style={Object.assign({}, flipCardFace, flipCardFaceFront)}>
           <div style={{ height: 200, paddingTop: 20 }} className="d-flex">
             <div style={{ flex: 1, padding: 20 }} className="d-flex align-items-center">
               <img src="https://www.caas.gov.sg/assets/caas/images/logo-caas-white.png" className="w-100" />
@@ -73,7 +117,12 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
           </div>
           <div
             className="flex-fill"
-            style={{ backgroundColor: "#2A4E8A", borderBottomRightRadius: 15, borderBottomLeftRadius: 15, padding: 20 }}
+            style={{
+              backgroundColor: colorBlueDark,
+              borderBottomRightRadius: 15,
+              borderBottomLeftRadius: 15,
+              padding: 20
+            }}
           >
             <div style={fieldGroupStyle}>
               <div style={labelStyle}>License Number:</div>
@@ -93,16 +142,15 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
             </div>
           </div>
         </div>
-        <div className="flipcard-face flipcard-face-back">
+        <div style={Object.assign({}, flipCardFace, flipCardFaceBack)}>
           <div style={{ padding: 20, fontSize: "0.8em", textAlign: "center" }} className="d-flex">
             THIS PILOT IS ENTITLED TO EXERCISE THE PRIVILEGES IN CONJUNCTION WITH THE RATINGS SHOWING BELOW:
           </div>
           <div
             className="flex-fill"
             style={{
-              backgroundColor: "#2A4E8A",
-              padding: 20,
-              marginBottom: 50
+              backgroundColor: colorBlueDark,
+              padding: 20
             }}
           >
             <div style={{ fontWeight: 900, fontSize: "0.8em", marginBottom: 20 }}>UNMANNED AIRCRAFT RATING</div>

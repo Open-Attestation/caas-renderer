@@ -9,15 +9,11 @@
     "@emotion/styled": "10.0.17",
     "@govtechsg/decentralized-renderer-react-components": "1.1.8",
     "@hot-loader/react-dom": "16.10.2",
-    "css-loader": "^3.4.0",
     "date-fns": "^2.6.0",
     "debug": "4.1.1",
-    "node-sass": "^4.13.0",
     "react": "16.10.2",
     "react-dom": "16.10.2",
-    "react-hot-loader": "4.12.15",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.2"
+    "react-hot-loader": "4.12.15"
   },
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --mode production",
