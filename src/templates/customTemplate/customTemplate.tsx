@@ -4,6 +4,8 @@ import { format } from "date-fns";
 // import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { CustomTemplateCertificate, Rating } from "../sample";
+import arrowRight from "./../../assets/images/common/arrow-right.svg";
+import arrowLeft from "./../../assets/images/common/arrow-left.svg";
 
 const colorWhite = "#ffffff";
 const colorMaroon = "#b1344b";
@@ -18,8 +20,8 @@ const cardH = "400px";
 const FieldGroup = styled.div<{ isFront: boolean }>`
   border: 0;
   border-left: 2px solid ${colorWhite};
-  padding-left: ${isFront => (isFront ? "15px" : "5px")};
-  margin-bottom: ${isFront => (isFront ? "10px" : "5px")};
+  padding-left: ${({ isFront }) => (isFront ? "15px" : "5px")};
+  margin-bottom: ${({ isFront }) => (isFront ? "10px" : "5px")};
 `;
 
 const RatingGroup = styled.div`
@@ -43,8 +45,24 @@ const RatingName = styled.div`
 const RatingHeading = styled.div`
   font-size: 0.8em;
   font-weight: 900;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
+
+const ButtonFlip = styled.div`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: ${colorMaroon};
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const ButtonFlipIcon = styled.img``;
 
 const LabelText = styled.div`
   font-size: 0.6em;
@@ -118,7 +136,7 @@ const LicenseDetails = styled.div`
 
 const LicenseInfo = styled.div`
   display: flex;
-  padding: 20px;
+  padding: 15px 20px;
   font-size: 0.8em;
   text-align: center;
 `;
@@ -127,7 +145,7 @@ const LicenseRatings = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  padding: 15px 20px;
   background-color: ${colorBlueDark};
 `;
 
@@ -197,7 +215,7 @@ const Ratings: FunctionComponent<RatingsProps> = ({ ratings }: { ratings: Rating
           <div>Limitations:</div>
           <div>{rating.limitations || "NIL"}</div>
         </FieldGroup>
-        <FieldGroup isFront={false} style={{ flex: 2 }}>
+        <FieldGroup isFront={false} style={{ flex: 1 }}>
           <div>Valid Till:</div>
           <div>{format(new Date(rating.expiryDate), "dd MMM yyyy")}</div>
         </FieldGroup>
@@ -220,7 +238,7 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
 
   return (
     <Scene>
-      <FlipCard isFlipped={isFlipped} onClick={onClickFlipCard}>
+      <FlipCard isFlipped={isFlipped}>
         <FlipCardFace isFront={true}>
           <Profile>
             <ProfileContent>
@@ -250,6 +268,9 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
               <LabelValue>{format(new Date(document.issuanceDate), "dd MMM yyyy")}</LabelValue>
             </FieldGroup>
           </LicenseDetails>
+          <ButtonFlip onClick={onClickFlipCard}>
+            <ButtonFlipIcon src={arrowRight} />
+          </ButtonFlip>
         </FlipCardFace>
         <FlipCardFace isFront={false}>
           <LicenseInfo>
@@ -259,6 +280,9 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
             <RatingHeading>UNMANNED AIRCRAFT RATING</RatingHeading>
             <Ratings ratings={document.ratings} />
           </LicenseRatings>
+          <ButtonFlip onClick={onClickFlipCard}>
+            <ButtonFlipIcon src={arrowLeft} />
+          </ButtonFlip>
         </FlipCardFace>
       </FlipCard>
     </Scene>
