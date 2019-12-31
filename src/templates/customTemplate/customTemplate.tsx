@@ -164,17 +164,20 @@ const FlipCardFace = styled.div<{ isFront: boolean }>`
 `;
 
 const LabelStatus: React.FunctionComponent<Props> = (props: Props) => {
-  const isExpiring = props.isExpiring;
-  const isExpired = props.isExpired;
-  if (isExpiring) {
-    return <LabelExpiring>Rating Expiring</LabelExpiring>;
-  }
+  const today = new Date();
+  const expiryDate = new Date(props.expiryDate);
+  const expiryDateYear = expiryDate.getFullYear();
+  const expiryDateMonth = expiryDate.getMonth();
+  const expiryDateDay = expiryDate.getDay();
+  const expiringDate = new Date(expiryDateYear, expiryDateMonth - 3, expiryDateDay);
 
-  if (isExpired) {
+  if (today > expiryDate) {
     return <LabelExpired>Rating Expired</LabelExpired>;
+  } else if (today > expiringDate) {
+    return <LabelExpiring>Rating Expiring</LabelExpiring>;
+  } else {
+    return "";
   }
-
-  return "";
 };
 
 interface RatingsProps {
@@ -185,7 +188,7 @@ const Ratings: FunctionComponent<RatingsProps> = ({ ratings }: { ratings: Rating
   const rendererdRatings = ratings.map((rating, index) => (
     <RatingGroup key={index}>
       <RatingName>{rating.name}</RatingName>
-      <LabelStatus isExpiring={true} />
+      <LabelStatus expiryDate={rating.expiryDate} />
       <RatingGroupDetails>
         <FieldGroup flex="2">
           <div>Limitations:</div>
