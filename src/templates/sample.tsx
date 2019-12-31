@@ -38,7 +38,7 @@ export const customTemplateCertificate: CustomTemplateCertificate = {
     {
       name: "Aeroplane Class Rating(≤ 25kg)",
       code: "AC25",
-      expiryDate: "2020-02-01T00:00:00.000Z"
+      expiryDate: "2023-09-21T00:00:00.000Z"
     },
     {
       name: "Rotocraft Class Rating(≤ 25kg)",

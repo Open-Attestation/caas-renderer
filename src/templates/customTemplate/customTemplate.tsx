@@ -15,12 +15,11 @@ const easeOutCubic = "cubic-bezier(0.215, 0.61, 0.355, 1)";
 const cardW = "250px";
 const cardH = "400px";
 
-const FieldGroup = styled.div`
+const FieldGroup = styled.div<{ isFront: boolean }>`
   border: 0;
   border-left: 2px solid ${colorWhite};
-  padding-left: ${props => (props.front ? "15px" : "5px")};
-  margin-bottom: ${props => (props.front ? "10px" : "5px")};
-  flex: ${props => props.flex};
+  padding-left: ${isFront => (isFront ? "15px" : "5px")};
+  margin-bottom: ${isFront => (isFront ? "10px" : "5px")};
 `;
 
 const RatingGroup = styled.div`
@@ -163,7 +162,11 @@ const FlipCardFace = styled.div<{ isFront: boolean }>`
   overflow: hidden;
 `;
 
-const LabelStatus: React.FunctionComponent<Props> = (props: Props) => {
+interface LabelStatusProps {
+  expiryDate: string;
+}
+
+const LabelStatus: React.FunctionComponent<LabelStatusProps> = (props: LabelStatusProps) => {
   const today = new Date();
   const expiryDate = new Date(props.expiryDate);
   const expiryDateYear = expiryDate.getFullYear();
@@ -176,7 +179,7 @@ const LabelStatus: React.FunctionComponent<Props> = (props: Props) => {
   } else if (today > expiringDate) {
     return <LabelExpiring>Rating Expiring</LabelExpiring>;
   } else {
-    return "";
+    return <></>;
   }
 };
 
@@ -190,11 +193,11 @@ const Ratings: FunctionComponent<RatingsProps> = ({ ratings }: { ratings: Rating
       <RatingName>{rating.name}</RatingName>
       <LabelStatus expiryDate={rating.expiryDate} />
       <RatingGroupDetails>
-        <FieldGroup flex="2">
+        <FieldGroup isFront={false} style={{ flex: 2 }}>
           <div>Limitations:</div>
           <div>{rating.limitations || "NIL"}</div>
         </FieldGroup>
-        <FieldGroup flex="1">
+        <FieldGroup isFront={false} style={{ flex: 2 }}>
           <div>Valid Till:</div>
           <div>{format(new Date(rating.expiryDate), "dd MMM yyyy")}</div>
         </FieldGroup>
@@ -230,19 +233,19 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
             </ProfileContent>
           </Profile>
           <LicenseDetails>
-            <FieldGroup front>
+            <FieldGroup isFront={true}>
               <LabelText>License Number:</LabelText>
               <LabelValue>{document.id}</LabelValue>
             </FieldGroup>
-            <FieldGroup front>
+            <FieldGroup isFront={true}>
               <LabelText>Name of Pilot:</LabelText>
               <LabelValue>{document.recipient.name}</LabelValue>
             </FieldGroup>
-            <FieldGroup front>
+            <FieldGroup isFront={true}>
               <LabelText>Birth Date:</LabelText>
               <LabelValue>{format(new Date(document.recipient.dob), "dd MMM yyyy")}</LabelValue>
             </FieldGroup>
-            <FieldGroup front>
+            <FieldGroup isFront={true}>
               <LabelText>Issue Date:</LabelText>
               <LabelValue>{format(new Date(document.issuanceDate), "dd MMM yyyy")}</LabelValue>
             </FieldGroup>
