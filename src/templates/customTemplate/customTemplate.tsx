@@ -6,7 +6,8 @@ import styled from "@emotion/styled";
 import { CustomTemplateCertificate, Rating } from "../sample";
 
 const colorWhite = "#ffffff";
-// const colorMaroon = "#b1344b";
+const colorMaroon = "#b1344b";
+const colorYellow = "#e4ab00";
 const colorBlue = "#3463b1";
 const colorBlueDark = "#2a4e8A";
 const easeOutCubic = "cubic-bezier(0.215, 0.61, 0.355, 1)";
@@ -31,6 +32,10 @@ const RatingGroup = styled.div`
   }
 `;
 
+const RatingGroupDetails = styled.div`
+  display: flex;
+`;
+
 const RatingName = styled.div`
   font-weight: 900;
   margin-bottom: 5px;
@@ -44,6 +49,30 @@ const RatingHeading = styled.div`
 
 const LabelText = styled.div`
   font-size: 0.6em;
+`;
+
+const LabelExpiring = styled.div`
+  font-size: 0.7em;
+  border-radius: 2px;
+  padding: 3px 8px;
+  display: inline-block;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+  font-weight: 900;
+  background-color: ${colorYellow};
+`;
+
+const LabelExpired = styled.div`
+  font-size: 0.7em;
+  border-radius: 2px;
+  padding: 3px 8px;
+  display: inline-block;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+  font-weight: 900;
+  background-color: ${colorMaroon};
 `;
 
 const LabelValue = styled.div`
@@ -99,9 +128,7 @@ const LicenseRatings = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 50%;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 20px;
   background-color: ${colorBlueDark};
 `;
 
@@ -136,6 +163,20 @@ const FlipCardFace = styled.div<{ isFront: boolean }>`
   overflow: hidden;
 `;
 
+const LabelStatus: React.FunctionComponent<Props> = (props: Props) => {
+  const isExpiring = props.isExpiring;
+  const isExpired = props.isExpired;
+  if (isExpiring) {
+    return <LabelExpiring>Rating Expiring</LabelExpiring>;
+  }
+
+  if (isExpired) {
+    return <LabelExpired>Rating Expired</LabelExpired>;
+  }
+
+  return "";
+};
+
 interface RatingsProps {
   ratings: Rating[];
 }
@@ -144,7 +185,8 @@ const Ratings: FunctionComponent<RatingsProps> = ({ ratings }: { ratings: Rating
   const rendererdRatings = ratings.map((rating, index) => (
     <RatingGroup key={index}>
       <RatingName>{rating.name}</RatingName>
-      <div className="d-flex">
+      <LabelStatus isExpiring={true} />
+      <RatingGroupDetails>
         <FieldGroup flex="2">
           <div>Limitations:</div>
           <div>{rating.limitations || "NIL"}</div>
@@ -153,7 +195,7 @@ const Ratings: FunctionComponent<RatingsProps> = ({ ratings }: { ratings: Rating
           <div>Valid Till:</div>
           <div>{format(new Date(rating.expiryDate), "dd MMM yyyy")}</div>
         </FieldGroup>
-      </div>
+      </RatingGroupDetails>
     </RatingGroup>
   ));
   return <>{rendererdRatings}</>;
