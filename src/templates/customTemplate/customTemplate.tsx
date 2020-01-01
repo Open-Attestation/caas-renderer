@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from "react";
 import { TemplateProps } from "@govtechsg/decentralized-renderer-react-components";
 import { format } from "date-fns";
-// import { css } from "@emotion/core";
+import { keyframes } from "@emotion/core";
 import styled from "@emotion/styled";
 import { CustomTemplateCertificate, Rating } from "../sample";
 import arrowRight from "./../../assets/images/common/arrow-right.svg";
@@ -157,10 +157,59 @@ const Scene = styled.div`
   perspective: 1000;
 `;
 
+const flipFancy = keyframes`
+  0% {
+    transform: translate3d(0, 0, 0) rotateY(0deg);
+  }
+
+  25% {
+    transform: translate3d(30%, 0, -25px) rotateY(-45deg);
+  }
+
+  50% {
+    transform: translate3d(70%, 0, 50px) rotateY(-90deg);
+  }
+
+  75% {
+    transform: translate3d(30%, 0, 25px) rotateY(-135deg);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(-180deg);
+  }
+`;
+
+const flipFancyReverse = keyframes`
+  0% {
+    transform: translate3d(0, 0, 0) rotateY(-180deg);
+  }
+
+  25% {
+    transform: translate3d(30%, 0, 25px) rotateY(-135deg);
+  }
+
+  50% {
+    transform: translate3d(70%, 0, 50px) rotateY(-90deg);
+  }
+
+  75% {
+    transform: translate3d(30%, 0, -25px) rotateY(-45deg);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(0deg);
+  }
+`;
+
 const FlipCard = styled.div<{ isFlipped: boolean }>`
-  transform: rotateY(${({ isFlipped }) => (isFlipped ? "-180deg" : "0deg")});
-  position: relative;
   transition: transform 0.7s ${easeOutCubic};
+  transform: rotateY(${({ isFlipped }) => (isFlipped ? "-180deg" : "0deg")});
+  // animation: ${({ isFlipped }) => (isFlipped ? flipFancy : flipFancyReverse)};
+  // animation-direction: normal;
+  // animation-duration: 0.6s;
+  // animation-timing-function: linear;
+  // animation-fill-mode: forwards;
+  position: relative;
   transform-style: preserve-3d;
   width: ${cardW};
   height: ${cardH};
