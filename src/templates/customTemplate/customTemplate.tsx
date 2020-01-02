@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { keyframes } from "@emotion/core";
 import styled from "@emotion/styled";
 import { CustomTemplateCertificate, Rating } from "../sample";
-import arrowRight from "./../../assets/images/common/arrow-right.svg";
+// import arrowRight from "./../../assets/images/common/arrow-right.svg";
 import arrowLeft from "./../../assets/images/common/arrow-left.svg";
 
 const colorWhite = "#ffffff";
@@ -13,6 +13,7 @@ const colorYellow = "#e4ab00";
 const colorBlue = "#3463b1";
 const colorBlueDark = "#2a4e8A";
 const easeOutCubic = "cubic-bezier(0.215, 0.61, 0.355, 1)";
+const easeInOutCubic = "cubic-bezier(0.645, 0.045, 0.355, 1)";
 
 const cardW = "250px";
 const cardH = "400px";
@@ -50,10 +51,11 @@ const RatingHeading = styled.div`
 
 const ButtonFlip = styled.div`
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  top: calc(${cardH} + 10px);
+  left: 50%;
   width: 36px;
   height: 36px;
+  margin-left -18px;
   border-radius: 50%;
   background-color: ${colorMaroon};
   cursor: pointer;
@@ -62,7 +64,10 @@ const ButtonFlip = styled.div`
   justify-content: center;
 `;
 
-const ButtonFlipIcon = styled.img``;
+const ButtonFlipIcon = styled.img<{ isFlipped: boolean }>`
+  transition: transform 0.4s ${easeInOutCubic};
+  transform: rotateZ(${({ isFlipped }) => (isFlipped ? "0deg" : "-180deg")});
+`;
 
 const LabelText = styled.div`
   font-size: 0.6em;
@@ -317,9 +322,6 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
               <LabelValue>{format(new Date(document.issuanceDate), "dd MMM yyyy")}</LabelValue>
             </FieldGroup>
           </LicenseDetails>
-          <ButtonFlip onClick={onClickFlipCard}>
-            <ButtonFlipIcon src={arrowRight} />
-          </ButtonFlip>
         </FlipCardFace>
         <FlipCardFace isFront={false}>
           <LicenseInfo>
@@ -329,11 +331,11 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
             <RatingHeading>UNMANNED AIRCRAFT RATING</RatingHeading>
             <Ratings ratings={document.ratings} />
           </LicenseRatings>
-          <ButtonFlip onClick={onClickFlipCard}>
-            <ButtonFlipIcon src={arrowLeft} />
-          </ButtonFlip>
         </FlipCardFace>
       </FlipCard>
+      <ButtonFlip onClick={onClickFlipCard}>
+        <ButtonFlipIcon src={arrowLeft} isFlipped={isFlipped} />
+      </ButtonFlip>
     </Scene>
   );
 };
