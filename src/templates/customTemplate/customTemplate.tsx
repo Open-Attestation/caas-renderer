@@ -3,7 +3,6 @@ import { TemplateProps } from "@govtechsg/decentralized-renderer-react-component
 import { format } from "date-fns";
 import styled from "@emotion/styled";
 import { CustomTemplateCertificate, Rating } from "../sample";
-import arrowLeft from "./../../assets/images/common/arrow-left.svg";
 
 const colorWhite = "#ffffff";
 const colorMaroon = "#b1344b";
@@ -70,7 +69,7 @@ const ButtonFlip = styled.button`
   }
 `;
 
-const ButtonFlipIcon = styled.img<{ isFlipped: boolean }>`
+const ButtonFlipIcon = styled.svg<{ isFlipped: boolean }>`
   transition: transform 0.4s ${easeInOutCubic};
   transform: rotateZ(${({ isFlipped }) => (isFlipped ? "0deg" : "-180deg")});
 `;
@@ -290,7 +289,22 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
         </FlipCardFace>
       </FlipCard>
       <ButtonFlip onClick={onClickFlipCard}>
-        <ButtonFlipIcon src={arrowLeft} isFlipped={isFlipped} />
+        <ButtonFlipIcon
+          isFlipped={isFlipped}
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="feather feather-arrow-left"
+        >
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </ButtonFlipIcon>
       </ButtonFlip>
     </Scene>
   );
