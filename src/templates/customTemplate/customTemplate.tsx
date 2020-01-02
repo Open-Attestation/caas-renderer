@@ -1,10 +1,8 @@
 import React, { FunctionComponent, useState } from "react";
 import { TemplateProps } from "@govtechsg/decentralized-renderer-react-components";
 import { format } from "date-fns";
-import { keyframes } from "@emotion/core";
 import styled from "@emotion/styled";
 import { CustomTemplateCertificate, Rating } from "../sample";
-// import arrowRight from "./../../assets/images/common/arrow-right.svg";
 import arrowLeft from "./../../assets/images/common/arrow-left.svg";
 
 const colorWhite = "#ffffff";
@@ -49,19 +47,27 @@ const RatingHeading = styled.div`
   margin-bottom: 15px;
 `;
 
-const ButtonFlip = styled.div`
+const ButtonFlip = styled.button`
+  appearance: none;
+  outline: none;
+  border: 0;
+  padding: 0;
   position: absolute;
   top: calc(${cardH} + 10px);
   left: 50%;
   width: 36px;
   height: 36px;
-  margin-left -18px;
+  margin-left: -18px;
   border-radius: 50%;
   background-color: ${colorMaroon};
   cursor: pointer;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const ButtonFlipIcon = styled.img<{ isFlipped: boolean }>`
@@ -162,58 +168,9 @@ const Scene = styled.div`
   perspective: 1000;
 `;
 
-const flipFancy = keyframes`
-  0% {
-    transform: translate3d(0, 0, 0) rotateY(0deg);
-  }
-
-  25% {
-    transform: translate3d(30%, 0, -25px) rotateY(-45deg);
-  }
-
-  50% {
-    transform: translate3d(70%, 0, 50px) rotateY(-90deg);
-  }
-
-  75% {
-    transform: translate3d(30%, 0, 25px) rotateY(-135deg);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0) rotateY(-180deg);
-  }
-`;
-
-const flipFancyReverse = keyframes`
-  0% {
-    transform: translate3d(0, 0, 0) rotateY(-180deg);
-  }
-
-  25% {
-    transform: translate3d(30%, 0, 25px) rotateY(-135deg);
-  }
-
-  50% {
-    transform: translate3d(70%, 0, 50px) rotateY(-90deg);
-  }
-
-  75% {
-    transform: translate3d(30%, 0, -25px) rotateY(-45deg);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0) rotateY(0deg);
-  }
-`;
-
 const FlipCard = styled.div<{ isFlipped: boolean }>`
   transition: transform 0.7s ${easeOutCubic};
   transform: rotateY(${({ isFlipped }) => (isFlipped ? "-180deg" : "0deg")});
-  // animation: ${({ isFlipped }) => (isFlipped ? flipFancy : flipFancyReverse)};
-  // animation-direction: normal;
-  // animation-duration: 0.6s;
-  // animation-timing-function: linear;
-  // animation-fill-mode: forwards;
   position: relative;
   transform-style: preserve-3d;
   width: ${cardW};
@@ -251,7 +208,7 @@ const LabelStatus: React.FunctionComponent<LabelStatusProps> = (props: LabelStat
   } else if (today > expiringDate) {
     return <LabelExpiring>Rating Expiring</LabelExpiring>;
   } else {
-    return <></>;
+    return null;
   }
 };
 
