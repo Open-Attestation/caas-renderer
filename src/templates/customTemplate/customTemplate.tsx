@@ -3,21 +3,18 @@ import { TemplateProps } from "@govtechsg/decentralized-renderer-react-component
 import { format } from "date-fns";
 import styled from "@emotion/styled";
 import { CustomTemplateCertificate, Rating } from "../sample";
+import { LabelStatus } from "./LabelStatus";
+import * as constants from "./constants";
 
-const colorWhite = "#ffffff";
-const colorMaroon = "#b1344b";
-const colorYellow = "#e4ab00";
-const colorBlue = "#3463b1";
-const colorBlueDark = "#2a4e8A";
-const easeOutCubic = "cubic-bezier(0.215, 0.61, 0.355, 1)";
-const easeInOutCubic = "cubic-bezier(0.645, 0.045, 0.355, 1)";
-
-const cardW = "250px";
-const cardH = "400px";
+const flexColumnCenter = `
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 const FieldGroup = styled.div<{ isFront: boolean }>`
   border: 0;
-  border-left: 2px solid ${colorWhite};
+  border-left: 2px solid ${constants.colorWhite};
   padding-left: ${({ isFront }) => (isFront ? "15px" : "5px")};
   margin-bottom: ${({ isFront }) => (isFront ? "10px" : "5px")};
 `;
@@ -52,13 +49,13 @@ const ButtonFlip = styled.button`
   border: 0;
   padding: 0;
   position: absolute;
-  top: calc(${cardH} + 10px);
+  top: calc(${constants.cardH} + 10px);
   left: 50%;
   width: 36px;
   height: 36px;
   margin-left: -18px;
   border-radius: 50%;
-  background-color: ${colorMaroon};
+  background-color: ${constants.colorMaroon};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -70,36 +67,12 @@ const ButtonFlip = styled.button`
 `;
 
 const ButtonFlipIcon = styled.svg<{ isFlipped: boolean }>`
-  transition: transform 0.4s ${easeInOutCubic};
+  transition: transform 0.4s ${constants.easeInOutCubic};
   transform: rotateZ(${({ isFlipped }) => (isFlipped ? "0deg" : "-180deg")});
 `;
 
 const LabelText = styled.div`
   font-size: 0.6em;
-`;
-
-const LabelExpiring = styled.div`
-  font-size: 0.7em;
-  border-radius: 2px;
-  padding: 3px 8px;
-  display: inline-block;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  letter-spacing: 0.02em;
-  font-weight: 900;
-  background-color: ${colorYellow};
-`;
-
-const LabelExpired = styled.div`
-  font-size: 0.7em;
-  border-radius: 2px;
-  padding: 3px 8px;
-  display: inline-block;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  letter-spacing: 0.02em;
-  font-weight: 900;
-  background-color: ${colorMaroon};
 `;
 
 const LabelValue = styled.div`
@@ -108,9 +81,7 @@ const LabelValue = styled.div`
 `;
 
 const Profile = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  ${flexColumnCenter}
   height: 50%;
   padding-left: 20px;
   padding-right: 20px;
@@ -121,27 +92,23 @@ const ProfileContent = styled.div`
 `;
 
 const ProfileAgency = styled.div`
+  ${flexColumnCenter}
   flex: 1 1 0%;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 `;
 
 const ProfileShot = styled.div`
   flex: 1 1 0%;
   padding: 20px;
-  background-color: ${colorWhite};
+  background-color: ${constants.colorWhite};
 `;
 
 const LicenseDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  ${flexColumnCenter}
   height: 50%;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: ${colorBlueDark};
+  background-color: ${constants.colorBlueDark};
 `;
 
 const LicenseInfo = styled.div`
@@ -152,11 +119,9 @@ const LicenseInfo = styled.div`
 `;
 
 const LicenseRatings = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  ${flexColumnCenter}
   padding: 15px 20px;
-  background-color: ${colorBlueDark};
+  background-color: ${constants.colorBlueDark};
 `;
 
 const Scene = styled.div`
@@ -168,15 +133,15 @@ const Scene = styled.div`
 `;
 
 const FlipCard = styled.div<{ isFlipped: boolean }>`
-  transition: transform 0.7s ${easeOutCubic};
+  transition: transform 0.7s ${constants.easeOutCubic};
   transform: rotateY(${({ isFlipped }) => (isFlipped ? "-180deg" : "0deg")});
   position: relative;
   transform-style: preserve-3d;
-  width: ${cardW};
-  height: ${cardH};
+  width: ${constants.cardW};
+  height: ${constants.cardH};
   margin-left: auto;
   margin-right: auto;
-  color: ${colorWhite};
+  color: ${constants.colorWhite};
 `;
 
 const FlipCardFace = styled.div<{ isFront: boolean }>`
@@ -185,30 +150,10 @@ const FlipCardFace = styled.div<{ isFront: boolean }>`
   position: absolute;
   height: 100%;
   width: 100%;
-  background-color: ${colorBlue};
+  background-color: ${constants.colorBlue};
   border-radius: 15px;
   overflow: hidden;
 `;
-
-interface LabelStatusProps {
-  expiryDate: Date;
-  today?: Date;
-}
-
-export const LabelStatus: React.FunctionComponent<LabelStatusProps> = ({ expiryDate, today = new Date() }) => {
-  const expiryDateYear = expiryDate.getFullYear();
-  const expiryDateMonth = expiryDate.getMonth();
-  const expiryDateDay = expiryDate.getDay();
-  const expiringDate = new Date(expiryDateYear, expiryDateMonth - 3, expiryDateDay);
-
-  if (today > expiryDate) {
-    return <LabelExpired>Rating Expired</LabelExpired>;
-  } else if (today > expiringDate) {
-    return <LabelExpiring>Rating Expiring Soon</LabelExpiring>;
-  } else {
-    return null;
-  }
-};
 
 interface RatingsProps {
   ratings: Rating[];
@@ -238,11 +183,7 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
   const [isFlipped, setFlip] = useState(false);
 
   const onClickFlipCard = () => {
-    if (isFlipped) {
-      setFlip(false);
-    } else {
-      setFlip(true);
-    }
+    setFlip(!isFlipped);
   };
 
   return (
