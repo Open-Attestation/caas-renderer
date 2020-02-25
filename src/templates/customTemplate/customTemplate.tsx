@@ -48,12 +48,10 @@ const ButtonFlip = styled.button`
   outline: none;
   border: 0;
   padding: 0;
-  position: absolute;
-  top: calc(${constants.cardH} + 10px);
-  left: 50%;
+  margin: auto;
+  margin-top: 10px;
   width: 36px;
   height: 36px;
-  margin-left: -18px;
   border-radius: 50%;
   background-color: ${constants.colorMaroon};
   cursor: pointer;
@@ -125,7 +123,6 @@ const LicenseRatings = styled.div`
 `;
 
 const Scene = styled.div`
-  position: absolute;
   width: 100%;
   margin-top: 2rem;
   perspective: 1000;
