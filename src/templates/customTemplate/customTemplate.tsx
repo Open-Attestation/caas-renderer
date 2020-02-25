@@ -138,6 +138,7 @@ const FlipCard = styled.div<{ isFlipped: boolean }>`
   margin-left: auto;
   margin-right: auto;
   color: ${constants.colorWhite};
+  cursor: pointer;
 `;
 
 const FlipCardFace = styled.div<{ isFront: boolean }>`
@@ -184,7 +185,7 @@ export const CustomTemplate: FunctionComponent<TemplateProps<CustomTemplateCerti
 
   return (
     <Scene>
-      <FlipCard isFlipped={isFlipped}>
+      <FlipCard isFlipped={isFlipped} onClick={onClickFlipCard}>
         <FlipCardFace isFront={true}>
           <Profile>
             <ProfileContent>
